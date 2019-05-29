@@ -20,7 +20,7 @@ public class Simulatore
 	private int TAVOLI_OTTO = 4;
 	private int TAVOLI_SEI = 4;
 	private int TAVOLI_QUATTRO = 5;
-	private Duration T_ARRIVAL = Duration.ofMinutes(5); //intervallo fra arrivo clienti
+	private Duration T_ARRIVAL = Duration.ofMinutes(1); //intervallo fra arrivo clienti
 	
 	// istante temporale di inizio simulazione
 	private LocalTime T_inizio = LocalTime.of(8, 0);
@@ -97,41 +97,49 @@ public class Simulatore
 					{
 						//assegno tavolo da 4 o bancone
 						// controllo di soddisfare punto 4 altrimenti (se sono tolleranti), li mando al bancone
-						if (g.getNumerosita() >= 2 || g.getTolleranza() < 0.5)
-							assegna("TAVOLI_QUATTRO", g);
+						if (g.getNumerosita() >= 2 && g.getTolleranza() < 0.5)
+							assegna("TAVOLI_QUATTRO", g); 
 						// bancone
-						else
+						else if (g.getTolleranza() > 0.5)
 							assegna("BANCONE", g);
+						else
+							assegna("TAVOLI_QUATTRO", g); 
 					}
 					else if (g.getNumerosita() <= 6 && TAVOLI_SEI > 0)
 					{
 						//assegno tavolo da 6 o bancone
 						// controllo di soddisfare punto 4 altrimenti (se sono tolleranti), li mando al bancone
-						if (g.getNumerosita() >= 3 || g.getTolleranza() < 0.5)
+						if (g.getNumerosita() >= 3 && g.getTolleranza() < 0.5)
 							assegna("TAVOLI_SEI", g);
 						// bancone
-						else
+						else if (g.getTolleranza() > 0.5)
 							assegna("BANCONE", g);
+						else
+							assegna("TAVOLI_SEI", g); 
 					}
 					else if (g.getNumerosita() <= 8 && TAVOLI_OTTO > 0)
 					{
 						//assegno tavolo da 8 o bancone 
 						// controllo di soddisfare punto 4 altrimenti (se sono tolleranti), li mando al bancone
-						if (g.getNumerosita() >= 4 || g.getTolleranza() < 0.5)
+						if (g.getNumerosita() >= 4 && g.getTolleranza() < 0.5)
 							assegna("TAVOLI_OTTO", g);
 						// bancone
-						else
+						else if (g.getTolleranza() > 0.5)
 							assegna("BANCONE", g);
+						else
+							assegna("TAVOLI_OTTO", g); 
 					}
 					else if (g.getNumerosita() <= 10 && TAVOLI_DIECI > 0)
 					{
 						//assegno tavolo da 10 o bancone
 						// controllo di soddisfare punto 4 altrimenti (se sono tolleranti), li mando al bancone
-						if (g.getNumerosita() >= 5 || g.getTolleranza() < 0.5)
+						if (g.getNumerosita() >= 5 && g.getTolleranza() < 0.5)
 							assegna("TAVOLI_DIECI", g);
 						// bancone
-						else
+						else if (g.getTolleranza() > 0.5)
 							assegna("BANCONE", g);
+						else
+							assegna("TAVOLI_DIECI", g); 
 					}
 					// caso nessun tavolo disponibile idoneo
 					else
@@ -190,6 +198,16 @@ public class Simulatore
 	{
 		// 
 		g.setTavoloAssegnato(daAssegnare);
+		
+		if (daAssegnare.compareTo("TAVOLI_QUATTRO") == 0)
+			TAVOLI_QUATTRO--;
+		else if (daAssegnare.compareTo("TAVOLI_SEI") == 0)
+			TAVOLI_SEI--;
+		else if (daAssegnare.compareTo("TAVOLI_OTTO") == 0)
+			TAVOLI_OTTO--;
+		else if (daAssegnare.compareTo("TAVOLI_DIECI") == 0)
+			TAVOLI_DIECI--;
+		
 		
 	}
 
